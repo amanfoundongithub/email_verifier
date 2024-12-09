@@ -67,6 +67,18 @@ func VerifyDomain(target_email string) (bool, error) {
 	// 	InsecureSkipVerify: true,
 	// })
 
+	// Send EHLO to the server to initiate communication
+	if _, err := fmt.Fprintf(conn, "EHLO smtp.gmail.com\r\n"); err != nil {
+		return false, errors.New("ERR_SENDING_EHLO")
+	}
+
+	response, err := tpReader.ReadLine()
+	if err != nil {
+		return false, errors.New("ERR_READING_EHLO_RESPONSE")
+	}
+
+	// Print the EHLO response for debugging purposes
+	fmt.Println("EHLO Response:", response)
 
 
 	// MAIL 
