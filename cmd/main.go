@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/amanfoundongithub/verifier/regex"
+	"github.com/amanfoundongithub/email_verifier/verifier/regex"
 )
 
 func main() {
