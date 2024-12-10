@@ -47,12 +47,13 @@ func VerifyDomain(target_email string) (bool, error) {
 		return false, errors.New("ERR_SENDING_EHLO")
 	}
 
+	// Server response 
 	_, err = tpReader.ReadLine()
 	if err != nil {
 		return false, errors.New("ERR_READING_EHLO_RESPONSE")
 	}
 
-	// MAIL 
+	// MAIL FROM 
 	if _, err := fmt.Fprintf(conn, "MAIL FROM:<%s>\r\n", sender_email); err != nil {
 		return false, errors.New("ERR_SENDING_MAIL")
 	}
@@ -62,7 +63,7 @@ func VerifyDomain(target_email string) (bool, error) {
 		return false, errors.New("ERR_READING_MAIL_RESPONSE")
 	}
 
-	// RCPT
+	// RCPT TO 
 	if _, err := fmt.Fprintf(conn, "RCPT TO:<%s>\r\n", target_email); err != nil {
 		return false, errors.New("ERR_SENDING_RCPT_REQUEST")
 	}
@@ -74,6 +75,8 @@ func VerifyDomain(target_email string) (bool, error) {
 		return false, errors.New("ERR_READING_RCPT_RESPONSE")
 	} 
 
+	// Response code : 250 -> Successful 
+	// Response code : 550 -> Insuccessful 
 	if strings.HasPrefix(response, "250") {
 		return true, nil 
 	} else {
