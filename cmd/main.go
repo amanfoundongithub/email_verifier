@@ -1,28 +1,17 @@
 package main
 
 import (
-	"fmt"
-	"github.com/amanfoundongithub/email_verifier/verifier"
+	"net/http"
+
+	"github.com/amanfoundongithub/email_verifier/api"
 )
 
 func main() {
-	email := "billygates124356@gmail.com"
+	
+	// Create new server
+	server := api.CreateEmailServer()
 
-	if verifier.IsValidRegex(email) {
-		fmt.Println("syntax checked, now validity...")
-		
-		response, err := verifier.VerifyDomain(email)
+	//
+	http.ListenAndServe(":8080", server) 
 
-		if err != nil {
-			fmt.Println(err)
-		} else {
-			if response {
-				fmt.Println("Verified")
-			} else {
-				fmt.Println("Unverified")
-			}
-		}
-	} else {
-		fmt.Println("yes")
-	}
 }
